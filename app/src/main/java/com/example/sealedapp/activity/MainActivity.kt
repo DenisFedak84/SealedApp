@@ -7,6 +7,8 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sealedapp.adapters.TodoAdapter
 import com.example.sealedapp.data.TodoModel
 import com.example.sealedapp.databinding.ActivityMainBinding
 import com.example.sealedapp.events.MainActivityEvents
@@ -22,12 +24,22 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var todoAdapter: TodoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBinding()
         subscribeToLiveData()
+        initRecyclerView()
         viewModel.getTodos()
+    }
+
+    private fun initRecyclerView() {
+        binding.rvTodos.apply {
+            todoAdapter = TodoAdapter()
+            adapter = todoAdapter
+            layoutManager = LinearLayoutManager(this@MainActivity)
+        }
     }
 
     private fun initBinding() {
@@ -52,12 +64,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showTodoList(todos: List<TodoModel>) {
-        binding.tvName.text = todos.size.toString()
+        todoAdapter.todos = todos
     }
 
     private fun handleLoading(loading: Boolean) {
         with(binding) {
-            tvName.visibleOrGone(!loading)
+            rvTodos.visibleOrGone(!loading)
             pbProgress.visibleOrGone(loading)
         }
     }
