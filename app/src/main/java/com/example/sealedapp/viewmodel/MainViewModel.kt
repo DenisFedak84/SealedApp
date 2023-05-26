@@ -2,14 +2,15 @@ package com.example.sealedapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sealedapp.data.TodoModel
 import com.example.sealedapp.events.MainActivityEvents
 import com.example.sealedapp.events.MainActivityEvents.LoadingEvent
 import com.example.sealedapp.events.MainActivityEvents.DefaultStateEvent
 import com.example.sealedapp.events.MainActivityEvents.ErrorEvent
 import com.example.sealedapp.events.MainActivityEvents.ShowDataEvent
-import com.example.sealedapp.repository.TodoRepository
+import com.example.sealedapp.usecase.GetTodosUseCase
+import com.example.sealedapp.usecase.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: TodoRepository
+    private val getTodosUseCase: GetTodosUseCase
 ) : ViewModel() {
 
     private val _mainActivityEvents = MutableStateFlow<MainActivityEvents>(DefaultStateEvent)
@@ -25,17 +26,17 @@ class MainViewModel @Inject constructor(
 
     fun getTodos() {
         viewModelScope.launch {
-            _mainActivityEvents.value = LoadingEvent(true)
-            delay(1000L)
-            repository.getTodos().flowOn(Dispatchers.IO).catch { error ->
-                _mainActivityEvents.value = LoadingEvent(false)
-                _mainActivityEvents.value = ErrorEvent(error.message ?: "")
-            }.collect {
-                _mainActivityEvents.value = LoadingEvent(false)
-                _mainActivityEvents.value = ShowDataEvent(it)
+            addDelay()
+            when (val result = getTodosUseCase.invoke()) {
+                is Resource.Success -> _mainActivityEvents.value = ShowDataEvent(result.data as List<TodoModel>)
+                is Resource.Error -> _mainActivityEvents.value = ErrorEvent(result.message ?: "")
             }
         }
     }
 
-
+    private suspend fun addDelay() {
+        _mainActivityEvents.value = LoadingEvent(true)
+        delay(1000L)
+        _mainActivityEvents.value = LoadingEvent(false)
+    }
 }

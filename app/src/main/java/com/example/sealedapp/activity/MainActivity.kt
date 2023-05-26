@@ -14,6 +14,10 @@ import com.example.sealedapp.databinding.ActivityMainBinding
 import com.example.sealedapp.events.MainActivityEvents
 import com.example.sealedapp.extansions.visibleOrGone
 import com.example.sealedapp.viewmodel.MainViewModel
+import com.example.sealedapp.events.MainActivityEvents.LoadingEvent
+import com.example.sealedapp.events.MainActivityEvents.DefaultStateEvent
+import com.example.sealedapp.events.MainActivityEvents.ErrorEvent
+import com.example.sealedapp.events.MainActivityEvents.ShowDataEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -53,10 +57,10 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.mainActivityEvents.collect {
                     when (it) {
-                        is MainActivityEvents.DefaultStateEvent -> Unit
-                        is MainActivityEvents.ErrorEvent -> showError(it.message)
-                        is MainActivityEvents.LoadingEvent -> handleLoading(it.loading)
-                        is MainActivityEvents.ShowDataEvent -> showTodoList(it.todos)
+                        is DefaultStateEvent -> Unit
+                        is ErrorEvent -> showError(it.message)
+                        is LoadingEvent -> handleLoading(it.loading)
+                        is ShowDataEvent -> showTodoList(it.todos)
                     }
                 }
             }
