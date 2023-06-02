@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">SealedApp</string>
     <string name="app_error">Something went wrong</string>
+
+    <!--    Main Activity-->
+    <string name="main_activity">Main Activity</string>
+    <string name="cart_default_value">0</string>
+
+    <!--    Cart Activity-->
+    <string name="cart_activity">Cart Activity</string>
+
 </resources>

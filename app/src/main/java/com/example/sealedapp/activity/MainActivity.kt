@@ -1,5 +1,6 @@
 package com.example.sealedapp.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -35,15 +36,8 @@ class MainActivity : AppCompatActivity() {
         initBinding()
         subscribeToLiveData()
         initRecyclerView()
+        initListeners()
         viewModel.getTodos()
-    }
-
-    private fun initRecyclerView() {
-        binding.rvTodos.apply {
-            todoAdapter = TodoAdapter()
-            adapter = todoAdapter
-            layoutManager = LinearLayoutManager(this@MainActivity)
-        }
     }
 
     private fun initBinding() {
@@ -64,6 +58,20 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun initRecyclerView() {
+        binding.rvTodos.apply {
+            todoAdapter = TodoAdapter()
+            adapter = todoAdapter
+            layoutManager = LinearLayoutManager(this@MainActivity)
+        }
+    }
+
+    private fun initListeners() {
+        binding.cartView.setOnClickListener {
+            startActivity(Intent(this, CartActivity::class.java))
         }
     }
 
