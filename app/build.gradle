@@ -44,17 +44,23 @@ dependencies {
     def retrofitVersion = "2.9.0"
     def interceptorVersion = "4.10.0"
     def lifecycleVersion = "2.6.1"
-    def activityVersion = "1.7.1"
-    def fragmentVersion = "1.5.7"
+    def activityVersion = "1.7.2"
+    def fragmentVersion = "1.6.0"
     def room_Version = "2.5.1"
+    def coroutines_test = "1.5.2"
+    def truth = "1.0.1"
 
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    //Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test"
+    testImplementation "com.google.truth:truth:$truth"
 
     //AndroidX
     implementation "androidx.activity:activity-ktx:$activityVersion"

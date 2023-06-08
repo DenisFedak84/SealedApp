@@ -24,19 +24,16 @@ class MainViewModel @Inject constructor(
     private val _mainActivityEvents = MutableStateFlow<MainActivityEvents>(DefaultStateEvent)
     val mainActivityEvents: StateFlow<MainActivityEvents> = _mainActivityEvents
 
+    @Suppress("UNCHECKED_CAST")
     fun getTodos() {
         viewModelScope.launch {
-            addDelay()
+            _mainActivityEvents.value = LoadingEvent(true)
+            delay(1000L)
             when (val result = getTodosUseCase.invoke()) {
                 is Resource.Success -> _mainActivityEvents.value = ShowDataEvent(result.data as List<TodoModel>)
                 is Resource.Error -> _mainActivityEvents.value = ErrorEvent(result.message ?: "")
             }
+            _mainActivityEvents.value = LoadingEvent(false)
         }
-    }
-
-    private suspend fun addDelay() {
-        _mainActivityEvents.value = LoadingEvent(true)
-        delay(1000L)
-        _mainActivityEvents.value = LoadingEvent(false)
     }
 }

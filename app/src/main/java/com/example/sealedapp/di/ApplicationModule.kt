@@ -2,6 +2,8 @@ package com.example.sealedapp.di
 
 import com.example.sealedapp.network.Config
 import com.example.sealedapp.network.TodosApi
+import com.example.sealedapp.repository.TodoRepository
+import com.example.sealedapp.repository.TodoRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,6 +12,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -40,4 +43,9 @@ object ApplicationModule {
     fun provideTodosApi(retrofit: Retrofit): TodosApi {
         return retrofit.create(TodosApi::class.java)
     }
+
+    @Provides
+    fun provideTodoRepositoryImpl(
+        api: TodosApi
+    ) = TodoRepositoryImpl(api) as TodoRepository
 }

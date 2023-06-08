@@ -10,12 +10,16 @@ class GetTodosUseCase @Inject constructor(
     private val repository: TodoRepository
 ) : BaseUseCase() {
 
-    override suspend fun  invoke(request: Any?): Resource<Any> {
+    override suspend fun invoke(request: Any?): Resource<Any> {
 
         repository.getTodos().flowOn(Dispatchers.IO).catch { e ->
             error = Resource.Error(e.message ?: "", null)
         }.collect {
-            success = Resource.Success(it)
+            if (it.isEmpty()) {
+                error = Resource.Error("Empty Data", null)
+            } else {
+                success = Resource.Success(it)
+            }
         }
 
         return useCaseResult()
