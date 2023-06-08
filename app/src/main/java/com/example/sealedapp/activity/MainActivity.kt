@@ -22,7 +22,9 @@ import com.example.sealedapp.events.MainActivityEvents.ShowDataEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-
+/**
+ * Main activity for the sealedapp
+ */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 

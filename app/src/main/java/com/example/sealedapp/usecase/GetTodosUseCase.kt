@@ -6,6 +6,11 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
+/**
+ * UseCase for get todos list. Will return Resource.Error if list is empty
+ * or Resource.Success if is data available.
+ * @param repository - Single entry point for managing tasks' data.
+ */
 class GetTodosUseCase @Inject constructor(
     private val repository: TodoRepository
 ) : BaseUseCase() {

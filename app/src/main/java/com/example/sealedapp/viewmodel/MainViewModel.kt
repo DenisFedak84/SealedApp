@@ -16,6 +16,9 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the task list screen.
+ */
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getTodosUseCase: GetTodosUseCase
